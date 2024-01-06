@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ca">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link href="style.css" rel="stylesheet">
+       
+        <title>Control de la tensió arterial</title>
+      </head>
+      <body>
+        <header>
+          <h1>Control de la Pressió Arterial</h1>
+        </header>
+        <main>
+            <section class="open-file">
+                <h2>Valors precedents</h2>
+                <input id = "json-file" type="file" name="file"/><br />
+                <p id = "content" class="content"></p>
+                <textarea id="message" name="message" rows="3" cols="95"></textarea>
+            </section>
+            <section class="nova-presa">
+            <h2>Nova presa</h2>
+            <form>
+              <div>
+                <label for="date">Data: </label>
+                <input id="date" type="date" required>
+              </div>
+              <div>
+                <label for="time">Hora: </label>
+                <input id="time" type="time" required>
+              </div>
+              <div>
+                <label for="systolic">Màxima: </label>
+                <input id="systolic" type="number" required>
+              </div>
+              <div>
+                <label for="diastolic">Mínima: </label>
+                <input id="diastolic" type="number" required>
+              </div>
+              <div>
+                <label for="pulse">Pulsacions: </label>
+                <input id="pulse" type="number" required>
+              </div>
+              <div>
+                <button id="btnRec" type="button">Enregistra</button>
+              </div>
+              <div>
+                <button id="btnDownLoad" type="button">Grava</button>
+              </div>
+            </form>
+          </section>
+        </main>
+        <script>
+            class Presa{
+                data;
+                hora;
+                sistolica;
+                diastolica;
+                pulsacions;
+                constructor(data, hora, sistolica, diastolica, pulsacions){
+                    this.data=data;
+                    this.hora=hora;
+                    this.sistolica=sistolica;
+                    this.diastolica=diastolica;
+                    this.pulsacions=pulsacions;
+                }
+            }
+            
+            let preses=[];
+            let	myPreses ="";
+            
+            const date = document.querySelector("#date");
+            const time = document.querySelector("#time");
+            const systolic = document.querySelector("#systolic");
+            const diastolic = document.querySelector("#diastolic");
+            const pulse = document.querySelector("#pulse");
+
+            const btnRec = document.querySelector("#btnRec");
+            const input = document.querySelector("#json-file");
+            const content = document.querySelector("#content");
+            const message = document.querySelector("#message");
+            const btnDownLoad = document.querySelector("#btnDownLoad");
+
+            input.addEventListener("change", previewFile);
+
+            function previewFile() {
+
+                // declares the file object
+                const [file] = document.querySelector("input[type=file]").files;
+                const reader = new FileReader();
+
+                reader.addEventListener(
+                    "load",
+                    () => {
+                    // this will then display a text file
+                    //content.textContent = reader.result;
+                    message.textContent = reader.result;
+                    preses = JSON.parse(reader.result);
+                    console.log("Control 2");
+                    },
+                    false
+                );
+
+                if (file) {
+                    reader.readAsText(file);
+                    console.log("Control 1");
+                    console.log(file);
+                }
+            }
+
+            btnRec.addEventListener("click", ()=> {
+                const presa = new Presa(
+                    date.value,
+                    time.value,
+                    systolic.value,
+                    diastolic.value,
+                    pulse.value    
+                );
+             
+                console.log(`Data Nova: ${date.value}`);
+                console.log(`Hora Nova: ${time.value}`);
+                console.log(`Màxima: ${systolic.value}`);
+                console.log(`Mínima: ${diastolic.value}`);
+                console.log(`Pulsacions: ${pulse.value}`);
+
+                console.log(presa);
+                
+                preses.push(presa);
+                console.log(preses);
+                myPreses = JSON.stringify(preses);
+                console.log(myPreses);
+                //content.textContent = myPreses;
+                message.textContent = myPreses;
+            });
+
+            btnDownLoad.addEventListener("click", () => {
+                const link = document.createElement("a");
+                const file = new Blob([myPreses], { type: 'text/plain' });
+                link.href = URL.createObjectURL(file);
+                link.download = "myPreses.json";
+                link.click();
+                URL.revokeObjectURL(link.href);
+            });
+        </script>
+      </body>
+</html>

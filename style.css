@@ -1,0 +1,35 @@
+html {
+    font-family: sans-serif;
+}
+body {
+    margin: 0 auto;
+    max-width: 800px;
+}
+div {
+    margin-bottom: 10px;
+}
+#date {
+    /* Uniform text field size */
+    width: 115px;
+    box-sizing: border-box;
+
+    /* Match form field borders */
+    border: 1px solid #999;
+}
+input {
+    /* Uniform text field size */
+    width: 75px;
+    box-sizing: border-box;
+
+    /* Match form field borders */
+    border: 1px solid #999;
+}
+label {
+    /* Uniform size & alignment */
+    display: inline-block;
+    width: 90px;
+    text-align: left;
+}
+button{
+    margin-left: 95px;
+}
