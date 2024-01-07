@@ -14,7 +14,8 @@
         <main>
             <section class="open-file">
                 <h2>Valors precedents</h2>
-                <input id = "json-file" type="file" name="file"/><br />
+                <button id="btnGetJSON">Carrega Dades Prèvies</button>
+                  <br />
                 <p id = "content" class="content"></p>
                 <textarea id="message" name="message" rows="3" cols="95"></textarea>
             </section>
@@ -81,32 +82,19 @@
             const message = document.querySelector("#message");
             const btnDownLoad = document.querySelector("#btnDownLoad");
 
-            input.addEventListener("change", previewFile);
+            //input.addEventListener("change", previewFile);
 
-            function previewFile() {
+            const btnGetJSON = document.querySelector("#btnGetJSON");
+            
+            btnGetJSON.addEventListener("click", ()=> {
+                const fetchPromise = fetch("https://xaparral.github.io/myPreses.JSON");
 
-                // declares the file object
-                const [file] = document.querySelector("input[type=file]").files;
-                const reader = new FileReader();
-
-                reader.addEventListener(
-                    "load",
-                    () => {
-                    // this will then display a text file
-                    //content.textContent = reader.result;
-                    message.textContent = reader.result;
-                    preses = JSON.parse(reader.result);
-                    console.log("Control 2");
-                    },
-                    false
-                );
-
-                if (file) {
-                    reader.readAsText(file);
-                    console.log("Control 1");
-                    console.log(file);
-                }
-            }
+                fetchPromise
+                    .then((Response) => Response.JSON())
+                    .then((data)=>{
+                        console.log(data[0].data);
+                    });
+            });
 
             btnRec.addEventListener("click", ()=> {
                 const presa = new Presa(
