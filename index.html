@@ -90,9 +90,9 @@
                 const fetchPromise = fetch("https://xaparral.github.io/myPreses.JSON");
 
                 fetchPromise
-                    .then((Response) => Response.JSON())
-                    .then((data)=>{
-                        console.log(data[0].data);
+                    .then((Response) => {
+                          const data = Response.JSON();
+                          console.log(data);
                     });
             });
 
@@ -132,3 +132,4 @@
         </script>
       </body>
 </html>
+
